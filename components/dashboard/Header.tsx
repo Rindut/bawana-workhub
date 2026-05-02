@@ -7,27 +7,36 @@ type HeaderProps = {
 
 export function Header({ dateLabel, onLogout }: HeaderProps) {
   return (
-    <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-3 bg-transparent">
+    <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3">
+        <div className="relative h-9 w-9 flex-shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-[#2b8fcb] to-[#27b89c]">
+          <Image
+            src="/bawana-icon-transparent.png"
+            alt="Bawana icon"
+            fill
+            priority
+            sizes="36px"
+            className="object-contain p-0.5"
+          />
+        </div>
         <Image
           src="/bawana-wordmark-v2.png"
           alt="Bawana"
-          width={170}
-          height={42}
+          width={110}
+          height={24}
           priority
-          className="h-auto w-[150px] bg-transparent sm:w-[170px]"
+          className="h-auto w-[110px] brightness-0 invert"
         />
-        <span className="h-6 w-px bg-slate-300" />
-        <span className="text-sm font-semibold tracking-[0.18em] text-slate-500">
+        <span className="ml-1 border-l border-white/40 pl-3 text-[13px] font-normal uppercase tracking-[0.12em] text-white/70">
           WORKHUB
         </span>
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="inline-flex items-center gap-2 rounded-lg bg-white/70 px-3 py-2 text-sm font-medium text-slate-600">
+        <div className="inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-3.5 py-[7px] text-[13px] font-medium text-white backdrop-blur-[6px]">
           <svg
             aria-hidden="true"
-            className="h-4 w-4 text-primary"
+            className="h-3.5 w-3.5 text-white/85"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +56,7 @@ export function Header({ dateLabel, onLogout }: HeaderProps) {
           <button
             type="button"
             onClick={onLogout}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg bg-white/25 px-[18px] py-[7px] text-[13px] font-medium text-white backdrop-blur-[6px] transition hover:bg-white/35"
           >
             Logout
           </button>

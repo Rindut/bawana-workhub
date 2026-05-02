@@ -5,6 +5,6 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f5f7fa;
+  background: linear-gradient(135deg, #3ab8c8 0%, #2b8fcb 30%, #27b89c 70%, #3dd6a0 100%);
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }

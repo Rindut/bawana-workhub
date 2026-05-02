@@ -3,6 +3,7 @@
 import { Greeting } from "@/components/dashboard/Greeting";
 import { Header } from "@/components/dashboard/Header";
 import { ToolCard } from "@/components/dashboard/ToolCard";
+import { DecorCircles } from "@/components/shared/DecorCircles";
 import {
   hasWorkhubAccess,
   WORKHUB_ACCESS_KEY
@@ -39,9 +40,9 @@ const tools: ToolItem[] = [
     )
   },
   {
-    title: "PM Radar",
+    title: "PM Logbook",
     description: "Monitor project health, spot risks early, and keep delivery on track.",
-    url: "https://pm.bawana.xyz",
+    url: "https://pmlog.bawana.xyz/",
     icon: (
       <svg
         aria-hidden="true"
@@ -73,7 +74,7 @@ const tools: ToolItem[] = [
     title: "Storyboard Builder",
     description:
       "Turn raw ideas into structured learning content your team can produce.",
-    url: "https://stb.bawana.xyz",
+    url: "https://stb.bawana.xyz/",
     icon: (
       <svg
         aria-hidden="true"
@@ -99,9 +100,10 @@ const tools: ToolItem[] = [
     )
   },
   {
-    title: "Content Tools",
-    description: "Create, manage, and publish content in one collaborative workspace.",
-    url: "https://content.bawana.xyz",
+    title: "BAWANA Userguide",
+    description:
+      "Your go-to reference for everything BAWANA. Guides, how-tos, and tips in one place.",
+    url: "https://docs.bawana.com",
     icon: (
       <svg
         aria-hidden="true"
@@ -158,15 +160,16 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-6 py-8 sm:px-10 lg:px-14">
-      <div className="mx-auto w-full max-w-[1440px]">
+    <main className="relative min-h-screen overflow-hidden px-5 py-8 sm:px-10">
+      <DecorCircles />
+      <div className="relative z-10 mx-auto w-full max-w-[1160px]">
         <Header dateLabel={dateLabel} onLogout={handleLogout} />
 
-        <div className="mt-10">
+        <div className="mt-12">
           <Greeting />
         </div>
 
-        <section className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {tools.map((tool) => (
             <ToolCard
               key={tool.title}

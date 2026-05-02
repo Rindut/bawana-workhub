@@ -10,7 +10,6 @@ import {
   WORKHUB_PASSWORD_ERROR
 } from "@/lib/auth";
 import { BrandLogo } from "./BrandLogo";
-import { LockIcon } from "./LockIcon";
 
 export function LoginCard() {
   const router = useRouter();
@@ -48,39 +47,60 @@ export function LoginCard() {
   };
 
   return (
-    <div className="w-full max-w-[430px] rounded-2xl bg-white p-10 shadow-[0_12px_28px_rgba(15,23,42,0.08)]">
+    <div className="w-full rounded-[20px] bg-white px-9 pb-8 pt-9 shadow-[0_20px_60px_rgba(0,80,120,0.18),0_2px_8px_rgba(0,0,0,0.06)]">
       <BrandLogo />
 
-      <form className="mt-8 flex flex-col gap-6" onSubmit={handleSubmit}>
+      <form className="flex flex-col" onSubmit={handleSubmit}>
         <label
-          className={`flex h-12 items-center rounded-xl border px-4 transition ${
-            error ? "border-red-400" : "border-transparent"
-          } bg-slate-100`}
+          htmlFor="password"
+          className="mb-[7px] text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8a9bb0]"
         >
-          <LockIcon />
+          Password
+        </label>
+        <div
+          className={`mb-4 flex h-[46px] items-center rounded-[10px] border-[1.5px] px-[14px] transition ${
+            error ? "border-red-400" : "border-[#e8eef4]"
+          } bg-[#f5f8fb] focus-within:border-[#2b8fcb] focus-within:bg-white`}
+        >
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
               if (error) setError("");
             }}
-            placeholder="Password"
+            autoComplete="current-password"
             aria-label="Password"
-            className="ml-3 w-full bg-transparent text-sm text-slate-700 placeholder:text-gray-400 focus:outline-none"
+            className="w-full bg-transparent text-sm text-[#1a2a3a] placeholder:text-[#b0bec8] focus:outline-none"
           />
-        </label>
+        </div>
 
         {error ? (
-          <p className="-mt-3 text-xs font-medium text-red-500">{error}</p>
+          <p className="-mt-2 mb-2 text-xs font-medium text-red-500">{error}</p>
         ) : null}
 
         <button
           type="submit"
           disabled={!canSubmit}
-          className="h-12 w-full rounded-xl bg-gradient-to-r from-primary to-[#2d7fce] text-sm font-semibold text-white shadow-sm transition duration-150 hover:scale-[1.01] hover:from-primary-hover hover:to-[#2367aa] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+          className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border-none bg-[#e8eef4] text-sm font-medium text-[#8a9bb0] transition duration-150 disabled:cursor-not-allowed disabled:opacity-90 enabled:bg-gradient-to-r enabled:from-[#2b8fcb] enabled:to-[#27b89c] enabled:text-white enabled:hover:-translate-y-[1px] enabled:hover:opacity-95"
         >
-          {isLoading ? "Checking..." : "Access Dashboard"}
+          {isLoading ? "Checking..." : "Login"}
+          <svg
+            aria-hidden="true"
+            className="h-[14px] w-[14px]"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 12H19M12 5L19 12L12 19"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </form>
     </div>
