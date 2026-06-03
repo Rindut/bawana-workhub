@@ -9,7 +9,9 @@ type ToolCardProps = {
 };
 
 const cardClassName =
-  "group relative flex h-full flex-col gap-3 rounded-2xl bg-white/95 px-6 pb-6 pt-[26px] shadow-[0_8px_32px_rgba(0,80,120,0.13),0_1px_4px_rgba(0,0,0,0.06)] backdrop-blur-[4px]";
+  "group relative flex h-full min-h-[224px] flex-col gap-3 rounded-2xl bg-white/95 px-6 pb-6 pt-[26px] shadow-[0_8px_32px_rgba(0,80,120,0.13),0_1px_4px_rgba(0,0,0,0.06)] backdrop-blur-[4px]";
+
+const footerClassName = "mt-auto flex h-10 shrink-0 items-end";
 
 function ComingSoonPill() {
   return (
@@ -63,14 +65,14 @@ export function ToolCard({
       </p>
 
       {!comingSoon ? (
-        <div className="mt-1">
+        <div className={footerClassName}>
           <span className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#2b8fcb] to-[#27b89c] px-[18px] py-[9px] text-[13px] font-semibold text-white transition duration-150 group-hover:translate-x-0.5 group-hover:opacity-95">
             Open
             <span aria-hidden="true">→</span>
           </span>
         </div>
       ) : (
-        <div className="mt-1">
+        <div className={footerClassName}>
           <ComingSoonPill />
         </div>
       )}

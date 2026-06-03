@@ -225,16 +225,17 @@ export default function DashboardPage() {
           <Greeting />
         </div>
 
-        <section className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <section className="grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
-            <ToolCard
-              key={tool.title}
-              title={tool.title}
-              description={tool.description}
-              url={tool.url}
-              icon={tool.icon}
-              comingSoon={tool.comingSoon}
-            />
+            <div key={tool.title} className="h-full min-h-0">
+              <ToolCard
+                title={tool.title}
+                description={tool.description}
+                url={tool.url}
+                icon={tool.icon}
+                comingSoon={tool.comingSoon}
+              />
+            </div>
           ))}
         </section>
       </div>
