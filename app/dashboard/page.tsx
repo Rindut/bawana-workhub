@@ -71,6 +71,34 @@ const tools: ToolItem[] = [
     )
   },
   {
+    title: "BAWANA Userguide",
+    description:
+      "Your go-to reference for everything BAWANA. Guides, how-tos, and tips in one place.",
+    url: "https://docs.bawana.com",
+    icon: (
+      <svg
+        aria-hidden="true"
+        className={iconClassName}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.8 6.2C6.4 5.1 8.4 4.9 10.2 5.6C11.2 6 12.1 6.6 12.9 7.4V18C12.1 17.2 11.2 16.6 10.2 16.2C8.4 15.5 6.4 15.7 4.8 16.8V6.2Z"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M19.2 6.2C17.6 5.1 15.6 4.9 13.8 5.6C12.8 6 11.9 6.6 11.1 7.4V18C11.9 17.2 12.8 16.6 13.8 16.2C15.6 15.5 17.6 15.7 19.2 16.8V6.2Z"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+      </svg>
+    )
+  },
+  {
     title: "Storyboard Builder",
     description:
       "Turn raw ideas into structured learning content your team can produce.",
@@ -100,10 +128,9 @@ const tools: ToolItem[] = [
     )
   },
   {
-    title: "BAWANA Userguide",
-    description:
-      "Your go-to reference for everything BAWANA. Guides, how-tos, and tips in one place.",
-    url: "https://docs.bawana.com",
+    title: "NETPOLITAN Showcase",
+    description: "Show your work. Inspire your team.",
+    url: "https://showcase.bawana.xyz/",
     icon: (
       <svg
         aria-hidden="true"
@@ -113,13 +140,40 @@ const tools: ToolItem[] = [
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M4.8 6.2C6.4 5.1 8.4 4.9 10.2 5.6C11.2 6 12.1 6.6 12.9 7.4V18C12.1 17.2 11.2 16.6 10.2 16.2C8.4 15.5 6.4 15.7 4.8 16.8V6.2Z"
+          d="M12 3.5L14.2 9.2H20.2L15.3 12.8L17.5 18.5L12 14.9L6.5 18.5L8.7 12.8L3.8 9.2H9.8L12 3.5Z"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+      </svg>
+    )
+  },
+  {
+    title: "Learning Studio",
+    description: "Transform documents into interactive learning.",
+    url: "https://learningstudio.bawana.com/",
+    icon: (
+      <svg
+        aria-hidden="true"
+        className={iconClassName}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 4H15L18 7V20H8V4Z"
           stroke="currentColor"
           strokeWidth="1.8"
           strokeLinejoin="round"
         />
         <path
-          d="M19.2 6.2C17.6 5.1 15.6 4.9 13.8 5.6C12.8 6 11.9 6.6 11.1 7.4V18C11.9 17.2 12.8 16.6 13.8 16.2C15.6 15.5 17.6 15.7 19.2 16.8V6.2Z"
+          d="M15 4V7H18"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M11 12L14 13.5L11 15V12Z"
           stroke="currentColor"
           strokeWidth="1.8"
           strokeLinejoin="round"
@@ -169,7 +223,7 @@ export default function DashboardPage() {
           <Greeting />
         </div>
 
-        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
             <ToolCard
               key={tool.title}
