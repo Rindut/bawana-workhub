@@ -16,6 +16,7 @@ type ToolItem = {
   description: string;
   url: string;
   icon: ReactNode;
+  comingSoon?: boolean;
 };
 
 const iconClassName = "h-5 w-5";
@@ -99,35 +100,6 @@ const tools: ToolItem[] = [
     )
   },
   {
-    title: "Storyboard Builder",
-    description:
-      "Turn raw ideas into structured learning content your team can produce.",
-    url: "https://stb.bawana.xyz/",
-    icon: (
-      <svg
-        aria-hidden="true"
-        className={iconClassName}
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M5 8H15M5 12H13M5 16H11"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-        <path
-          d="M15.2 16.8L18.5 13.5M18.5 13.5L21 16M18.5 13.5L16 11"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    )
-  },
-  {
     title: "NETPOLITAN Showcase",
     description: "Show your work. Inspire your team.",
     url: "https://showcase.bawana.xyz/",
@@ -176,6 +148,36 @@ const tools: ToolItem[] = [
           d="M11 12L14 13.5L11 15V12Z"
           stroke="currentColor"
           strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+      </svg>
+    )
+  },
+  {
+    title: "Storyboard Builder",
+    description:
+      "Turn raw ideas into structured learning content your team can produce.",
+    url: "https://stb.bawana.xyz/",
+    comingSoon: true,
+    icon: (
+      <svg
+        aria-hidden="true"
+        className={iconClassName}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5 8H15M5 12H13M5 16H11"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+        <path
+          d="M15.2 16.8L18.5 13.5M18.5 13.5L21 16M18.5 13.5L16 11"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
           strokeLinejoin="round"
         />
       </svg>
@@ -231,6 +233,7 @@ export default function DashboardPage() {
               description={tool.description}
               url={tool.url}
               icon={tool.icon}
+              comingSoon={tool.comingSoon}
             />
           ))}
         </section>
