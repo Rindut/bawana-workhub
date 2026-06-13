@@ -22,9 +22,26 @@ function checkAdmin(req: Request): NextResponse | null {
 }
 
 /** Public: the dashboard reads the tool list. */
-export async function GET() {
+function isAdmin(req: Request): boolean {
+  const adminPassword = process.env.WORKHUB_ADMIN_PASSWORD;
+  return Boolean(adminPassword) && req.headers.get("x-admin-key") === adminPassword;
+}
+
+export async function GET(req: Request) {
   const tools = await getTools();
-  return NextResponse.json(tools, {
+
+  // adminUrl is admin-only. Strip it from the public response so it never
+  // reaches non-admin users (who could otherwise read it from the network
+  // tab). Admin requests carry a valid key and get the full data.
+  const payload = isAdmin(req)
+    ? tools
+    : tools.map((tool) => {
+        const rest = { ...tool };
+        delete rest.adminUrl;
+        return rest;
+      });
+
+  return NextResponse.json(payload, {
     headers: { "Cache-Control": "no-store, max-age=0" }
   });
 }
@@ -49,7 +66,8 @@ function isValidTool(value: unknown): value is Tool {
     typeof t.url === "string" &&
     typeof t.icon === "string" &&
     typeof t.category === "string" &&
-    (t.comingSoon === undefined || typeof t.comingSoon === "boolean")
+    (t.comingSoon === undefined || typeof t.comingSoon === "boolean") &&
+    (t.adminUrl === undefined || typeof t.adminUrl === "string")
   );
 }
 

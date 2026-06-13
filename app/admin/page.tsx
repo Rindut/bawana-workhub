@@ -14,7 +14,8 @@ const emptyForm: Omit<Tool, "id"> = {
   url: "",
   icon: "grid",
   category: "",
-  comingSoon: false
+  comingSoon: false,
+  adminUrl: ""
 };
 
 const inputClassName =
@@ -51,7 +52,10 @@ export default function AdminPage() {
   useEffect(() => {
     if (!adminKey) return;
 
-    fetch("/api/tools", { cache: "no-store" })
+    fetch("/api/tools", {
+      cache: "no-store",
+      headers: { "x-admin-key": adminKey }
+    })
       .then((res) => res.json())
       .then((data: Tool[]) => setTools(data))
       .catch(() => setNotice("Could not load tools. Refresh the page."));
@@ -146,7 +150,8 @@ export default function AdminPage() {
       url: tool.url,
       icon: tool.icon,
       category: tool.category,
-      comingSoon: tool.comingSoon ?? false
+      comingSoon: tool.comingSoon ?? false,
+      adminUrl: tool.adminUrl ?? ""
     });
   };
 
@@ -164,12 +169,17 @@ export default function AdminPage() {
     event.preventDefault();
     if (!tools) return;
 
+    const cleaned = {
+      ...form,
+      adminUrl: form.adminUrl?.trim() ? form.adminUrl.trim() : undefined
+    };
+
     if (editingId === "new") {
-      const tool: Tool = { id: crypto.randomUUID(), ...form };
+      const tool: Tool = { id: crypto.randomUUID(), ...cleaned };
       void persist([...tools, tool]);
     } else {
       void persist(
-        tools.map((t) => (t.id === editingId ? { ...t, ...form } : t))
+        tools.map((t) => (t.id === editingId ? { ...t, ...cleaned } : t))
       );
     }
 
@@ -279,6 +289,17 @@ export default function AdminPage() {
                   {tool.url}
                 </p>
               </div>
+              {tool.adminUrl && (
+                <a
+                  href={tool.adminUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className={`${subtleButtonClassName} shrink-0`}
+                >
+                  Open admin ↗
+                </a>
+              )}
               <div className="flex shrink-0 items-center gap-1.5">
                 <button
                   onClick={() => moveTool(index, -1)}
@@ -357,6 +378,21 @@ export default function AdminPage() {
                   onChange={(e) => setForm({ ...form, url: e.target.value })}
                   className={inputClassName}
                   placeholder="https://"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className={labelClassName} htmlFor="tool-admin-url">
+                  Admin URL (optional, admin page only)
+                </label>
+                <input
+                  id="tool-admin-url"
+                  type="url"
+                  value={form.adminUrl}
+                  onChange={(e) =>
+                    setForm({ ...form, adminUrl: e.target.value })
+                  }
+                  className={inputClassName}
+                  placeholder="https://… link to this app's admin panel"
                 />
               </div>
               <div className="sm:col-span-2">

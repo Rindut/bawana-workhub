@@ -6,6 +6,8 @@ export type Tool = {
   icon: string;
   category: string;
   comingSoon?: boolean;
+  /** Optional quick-link to the app's own admin panel. Admin page only. */
+  adminUrl?: string;
 };
 
 export const TOOL_CATEGORIES = [
