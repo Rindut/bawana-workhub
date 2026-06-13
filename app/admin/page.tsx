@@ -37,7 +37,6 @@ export default function AdminPage() {
   const [verifying, setVerifying] = useState(false);
 
   const [tools, setTools] = useState<Tool[] | null>(null);
-  const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -52,7 +51,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!adminKey) return;
 
-    fetch("/api/tools")
+    fetch("/api/tools", { cache: "no-store" })
       .then((res) => res.json())
       .then((data: Tool[]) => setTools(data))
       .catch(() => setNotice("Could not load tools. Refresh the page."));
@@ -84,10 +83,42 @@ export default function AdminPage() {
     );
   };
 
-  const updateTools = (next: Tool[]) => {
+  /** Save the full list to the server immediately. Reverts on failure. */
+  const persist = async (next: Tool[]) => {
+    if (!adminKey) return;
+
+    const previous = tools;
     setTools(next);
-    setDirty(true);
+    setSaving(true);
     setNotice("");
+
+    const res = await fetch("/api/tools", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-key": adminKey
+      },
+      body: JSON.stringify(next)
+    });
+
+    setSaving(false);
+
+    if (res.ok) {
+      setNotice("Saved.");
+      return;
+    }
+
+    // Roll back the optimistic update so the UI matches the server.
+    setTools(previous ?? null);
+
+    if (res.status === 401) {
+      sessionStorage.removeItem(ADMIN_KEY_STORAGE);
+      setAdminKey(null);
+      return;
+    }
+
+    const data = await res.json().catch(() => null);
+    setNotice(data?.error ?? "Save failed. Please try again.");
   };
 
   const moveTool = (index: number, direction: -1 | 1) => {
@@ -97,14 +128,14 @@ export default function AdminPage() {
 
     const next = [...tools];
     [next[index], next[target]] = [next[target], next[index]];
-    updateTools(next);
+    void persist(next);
   };
 
   const deleteTool = (id: string) => {
     if (!tools) return;
     const tool = tools.find((t) => t.id === id);
     if (!window.confirm(`Delete "${tool?.title}"?`)) return;
-    updateTools(tools.filter((t) => t.id !== id));
+    void persist(tools.filter((t) => t.id !== id));
   };
 
   const startEdit = (tool: Tool) => {
@@ -135,46 +166,14 @@ export default function AdminPage() {
 
     if (editingId === "new") {
       const tool: Tool = { id: crypto.randomUUID(), ...form };
-      updateTools([...tools, tool]);
+      void persist([...tools, tool]);
     } else {
-      updateTools(
+      void persist(
         tools.map((t) => (t.id === editingId ? { ...t, ...form } : t))
       );
     }
 
     cancelEdit();
-  };
-
-  const saveAll = async () => {
-    if (!tools || !adminKey) return;
-    setSaving(true);
-    setNotice("");
-
-    const res = await fetch("/api/tools", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "x-admin-key": adminKey
-      },
-      body: JSON.stringify(tools)
-    });
-
-    setSaving(false);
-
-    if (res.ok) {
-      setDirty(false);
-      setNotice("Saved. The dashboard now shows the updated list.");
-      return;
-    }
-
-    if (res.status === 401) {
-      sessionStorage.removeItem(ADMIN_KEY_STORAGE);
-      setAdminKey(null);
-      return;
-    }
-
-    const data = await res.json().catch(() => null);
-    setNotice(data?.error ?? "Save failed. Please try again.");
   };
 
   const categories = Array.from(
@@ -229,18 +228,16 @@ export default function AdminPage() {
             Manage Tools
           </h1>
           <div className="flex items-center gap-2.5">
+            {saving && (
+              <span className="text-[13px] font-medium text-white/90">
+                Saving…
+              </span>
+            )}
             <button
               onClick={() => router.push("/dashboard")}
               className={subtleButtonClassName}
             >
               ← Dashboard
-            </button>
-            <button
-              onClick={saveAll}
-              disabled={!dirty || saving}
-              className={primaryButtonClassName}
-            >
-              {saving ? "Saving…" : dirty ? "Save changes" : "Saved"}
             </button>
           </div>
         </div>
@@ -437,7 +434,7 @@ export default function AdminPage() {
 
             <div className="mt-6 flex items-center gap-2.5">
               <button type="submit" className={primaryButtonClassName}>
-                {editingId === "new" ? "Add to list" : "Apply changes"}
+                {editingId === "new" ? "Add tool" : "Save changes"}
               </button>
               <button
                 type="button"
@@ -446,9 +443,8 @@ export default function AdminPage() {
               >
                 Cancel
               </button>
-              <p className="ml-1 text-[12px] text-white/85">
-                Changes are applied to the list — press Save changes to
-                publish.
+              <p className="ml-1 text-[12px] text-[#6b7e90]">
+                Saves immediately and updates the dashboard.
               </p>
             </div>
           </form>

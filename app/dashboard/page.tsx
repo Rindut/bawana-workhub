@@ -32,7 +32,7 @@ export default function DashboardPage() {
   }, [router]);
 
   useEffect(() => {
-    fetch("/api/tools")
+    fetch("/api/tools", { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load tools");
         return res.json();

@@ -24,7 +24,9 @@ function checkAdmin(req: Request): NextResponse | null {
 /** Public: the dashboard reads the tool list. */
 export async function GET() {
   const tools = await getTools();
-  return NextResponse.json(tools);
+  return NextResponse.json(tools, {
+    headers: { "Cache-Control": "no-store, max-age=0" }
+  });
 }
 
 /** Admin-only: verify the admin password (used by the admin login form). */
