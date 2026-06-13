@@ -16,3 +16,9 @@ pnpm-debug.log*
 
 # macOS
 .DS_Store
+
+# local tool data (JSON fallback storage)
+data/
+
+# typescript build info
+*.tsbuildinfo
